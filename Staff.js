@@ -12,7 +12,7 @@ if (typeof exports !== 'undefined') {
 
 Staff.VERSION = "0.0.1";
 
-Staff.Events = {
+var Events = {
 
   addListener: function addListener(evt, callback) {
     var calls = this._callbacks || (this._callbacks = {});
@@ -52,6 +52,36 @@ Staff.Events = {
     return this;
   }
 };
-Staff.Events.on = Staff.Events.addListener;
+Events.on = Events.addListener;
+function Model(attributes, options) {
+  attributes || (attributes = {});
+}
+Model.prototype = Object.create(Events, {constructor: {value: Model}});
+Model.prototype.initialize = function initialize() {};
+Model.prototype.get = function get(attr) {
+  return this.attributes[attr];
+}
+
+function Collection(models, options) {
+  options || (options = {});
+}
+Collection.prototype = Object.create(Events, {constructor: {value: Collection}});
+
+function Controller(options) {
+  options || (options = {});
+}
+Controller.prototype = Object.create(Events, {constructor: {value: Controller}});
+
+function View(options) {
+  options || (options = {});
+}
+View.prototype = Object.create(Events, {constructor: {value: View}});
+
+
+Staff.Events = Events;
+Staff.Model = Model;
+Staff.Collection = Collection;
+Staff.Controller = Controller;
+Staff.View = View;
 
 }());
